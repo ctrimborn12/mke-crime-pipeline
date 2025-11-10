@@ -6,7 +6,7 @@ import os
 os.makedirs("data/raw", exist_ok=True)
 
 RESOURCE_ID = "87843297-a6fa-46d4-ba5d-cb342fb2d3bb"
-LIMIT = 5000  # fetch 5000 rows per request
+LIMIT = 30000  # fetch 5000 rows per request
 URL = f"https://data.milwaukee.gov/api/3/action/datastore_search?resource_id={RESOURCE_ID}&limit={LIMIT}"
 
 def extract_data():
