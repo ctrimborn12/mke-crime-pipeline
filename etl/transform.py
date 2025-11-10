@@ -24,7 +24,6 @@ def prepare_geodata(crime, neighborhoods):
     
 # add time features
 def add_time_features(df):
-    print("🔹 Extracting time features...")
     df["ReportedDateTime"] = pd.to_datetime(df["ReportedDateTime"], errors="coerce")
     df["Year"] = df["ReportedDateTime"].dt.year
     df["Month"] = df["ReportedDateTime"].dt.month
@@ -96,6 +95,28 @@ def summarize_most_common_crime(df, crime_types, name_col):
     return pd.DataFrame(results)
 
 
+def summarize_crime_counts_by_neighborhood_and_type(df, crime_types, name_col):
+    melted = df.melt(id_vars=[name_col], value_vars=crime_types, var_name="CrimeType", value_name="Occurred")
+    filtered = melted[melted["Occurred"] == 1]  
+
+    summary = (
+        filtered.groupby([name_col, "CrimeType"])
+        .size()
+        .reset_index(name="Count")
+    )
+
+    return summary
+
+
+def summarize_weapon_use(df):
+    df["WeaponUsedFlag"] = df["WeaponUsed"].notnull()
+    return (
+        df.groupby("WeaponUsedFlag")
+        .size()
+        .reset_index(name="Count")
+    )
+
+
 def transform_data(crime_path="data/raw/crime_raw.csv",
                    neighborhood_path="data/raw/neighborhood/neighborhood.shp",
                    output_dir="data/processed/"):
@@ -118,6 +139,8 @@ def transform_data(crime_path="data/raw/crime_raw.csv",
     "most_common_crime_per_neighborhood": summarize_most_common_crime(crime_joined, crime_types, name_col),
     "crimes_by_hour": summarize_crimes_by_hour(crime_joined),
     "crimes_by_weekday": summarize_crimes_by_weekday(crime_joined),
+    "weapon_use_rate": summarize_weapon_use(crime_joined),
+    "crimes_by_neighborhood_and_type": summarize_crime_counts_by_neighborhood_and_type(crime_joined, crime_types, name_col)
     }
     
     for name, df in summaries.items():
