@@ -3,27 +3,43 @@ import pandas as pd
 import urllib.request
 import os
 
-os.makedirs("data/raw", exist_ok=True)
+CURRENT_RESOURCE_ID = "87843297-a6fa-46d4-ba5d-cb342fb2d3bb" 
+HISTORICAL_RESOURCE_ID = "395db729-a30a-4e53-ab66-faeb5e1899c8"
 
-RESOURCE_ID = "87843297-a6fa-46d4-ba5d-cb342fb2d3bb"
-LIMIT = 30000  # fetch 5000 rows per request
-URL = f"https://data.milwaukee.gov/api/3/action/datastore_search?resource_id={RESOURCE_ID}&limit={LIMIT}"
+def fetch_resource(resource_id, limit=5000):
+    all_records = []
+    offset = 0
+
+    while True:
+        url = (
+            "https://data.milwaukee.gov/api/3/action/datastore_search"
+            f"?resource_id={resource_id}&limit={limit}&offset={offset}"
+        )
+
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read())
+
+        records = data["result"]["records"]
+        if not records:
+            break
+
+        all_records.extend(records)
+        offset += limit
+
+    return pd.DataFrame(all_records)
+
 
 def extract_data():
-    print("Fetching data from CKAN API...")
-    fileobj = urllib.request.urlopen(URL)
-    response_dict = json.loads(fileobj.read())
+    os.makedirs("data/raw/api", exist_ok=True)
 
-    # The data is in response_dict['result']['records']
-    records = response_dict["result"]["records"]
-    
-    df = pd.DataFrame(records)
-    
-    df.to_csv("data/raw/crime_raw.csv", index=False)
-    print(f"✅ Extracted {len(df)} rows to data/raw/crime_raw.csv")
-    print("Columns:", df.columns.tolist())
-    
-    return df
+    print("Fetching current data...")
+    df_current = fetch_resource(CURRENT_RESOURCE_ID)
+    df_current.to_csv("data/raw/api/crime_raw_current.csv", index=False)
+    print("Current rows:", len(df_current))
 
-if __name__ == "__main__":
-    extract_data()
+    print("Fetching historical data...")
+    df_hist = fetch_resource(HISTORICAL_RESOURCE_ID)
+    df_hist.to_csv("data/raw/api/crime_raw_historical.csv", index=False)
+    print("Historical rows:", len(df_hist))
+
+    return df_current, df_hist
