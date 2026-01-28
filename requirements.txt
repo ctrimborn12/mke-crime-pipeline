@@ -98,7 +98,7 @@ Pympler==1.1
 PyMySQL==1.1.2
 pyogrio==0.8.0
 pyparsing==3.2.5
-pyproj==3.4.1
+pyproj==3.6.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.1
 python-json-logger==4.0.0
