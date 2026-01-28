@@ -2,7 +2,7 @@
 
 # Milwaukee Crime Dashboard
 
-An interactive data visualization dashboard built with Streamlit to explore reported crime incidents in Milwaukee. The project includes a complete ETL pipeline that extracts, transforms, and loads crime data for analysis and visualization.
+An interactive data visualization dashboard built with Streamlit to explore reported crime incidents in Milwaukee since 2005. The project includes a complete ETL pipeline that extracts, transforms, and loads crime data for analysis and visualization.
 
 ---
 
@@ -21,7 +21,7 @@ This dashboard allows users to:
 
 ### Crime Data
 - Source: City of Milwaukee Open Data Portal (CKAN Data API)
-- Data includes both current and historical crime incident records
+- Data includes both current and historical crime incident records dating back to 2005
 - Raw data is extracted via API and stored as CSV files
 
 ### Neighborhood Boundaries
@@ -41,6 +41,7 @@ The ETL pipeline is located in the `etl/` directory and consists of the followin
 
 ### Transform
 - Combines current and historical crime data
+- Drops rows with missing coordinates 
 - Converts reported date/time into derived features:
   - Year
   - Month
@@ -99,6 +100,25 @@ Note: The neighborhood boundary data consists of multiple files that collectivel
 
 ---
 
+## Key Insights from the Data
+
+This section summarizes the primary insights revealed through interactive exploration of the dashboard. These findings are based on aggregated trends, temporal patterns, and spatial distributions observed in the data.
+
+### Temporal Trends
+- Incident counts have almost always decreased or remained steady since 2005, with the exception of spikes in the years 2020 and 2021. 
+- Crime incidents show clear seasonal patterns, with higher volumes during the summer months.
+- Weekends consistently see higher incident counts compared to weekdays
+
+### Geographic Patterns
+- Across all years, assault offense incidents have dominated the nothern half of the city whereas theft incidents have dominated the southern half.
+- Up until around 2013, theft was the most prevalent offense across Milwaukee neighborhoods. From 2013 on, assault offense incidents have been the most prevalent.
+
+### Crime Type Distribution
+- Assualt offenses make up the largest share of incidents, followed by theft, vehicle theft, and criminal damage.
+- From 2005-2012, theft had the largest share of incidents, from 2012 on, assault offenses had the largest share. 
+
+---
+
 ## Running the Dashboard Locally
 
 ### 1. Create and activate a virtual environment
@@ -129,8 +149,6 @@ streamlit run mke-crime-dashboard.py
 
 ## Deployment Notes
 
-* The Streamlit app is compatible with Streamlit Community Cloud.
-* Due to the free-tier limitations, data is not automatically refreshed on a schedule.
 * The ETL pipeline can be run locally to update the processed dataset before deployment.
 * The neighborhood shapefile must be downloaded manually from the City of Milwaukee Open Data Portal and placed in the expected directory.
 
