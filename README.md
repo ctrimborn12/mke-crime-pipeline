@@ -113,7 +113,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. (Optional) Run the ETL pipeline
+### 3. Run the ETL pipeline
 
 ```bash
 python etl/pipeline.py
