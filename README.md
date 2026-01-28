@@ -107,7 +107,7 @@ This section summarizes the primary insights revealed through interactive explor
 ### Temporal Trends
 - Incident counts have almost always decreased or remained steady since 2005, with the exception of spikes in the years 2020 and 2021. 
 - Crime incidents show clear seasonal patterns, with higher volumes during the summer months.
-- Weekends consistently see higher incident counts compared to weekdays
+- Weekends consistently see higher incident counts compared to weekdays.
 
 ### Geographic Patterns
 - Across all years, assault offense incidents have dominated the nothern half of the city whereas theft incidents have dominated the southern half.
