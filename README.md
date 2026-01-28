@@ -25,7 +25,7 @@ This dashboard allows users to:
 - Raw data is extracted via API and stored as CSV files
 
 ### Neighborhood Boundaries
-- Source: City of Milwaukee Open Data Portal
+- Source: City of Milwaukee Open Data Portal (https://data.milwaukee.gov/dataset/0f5695f6-bca1-46e9-832b-54d1d906d28e/resource/964353e8-a579-402a-a8e9-c50ea0ae3aa4/download/neighborhood.zip)
 - Data provided as a neighborhood shapefile
 - Used to associate crime incidents with neighborhoods via spatial join
 
